@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elite Analytics</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg:      #06090f;
+      --surface: #0c1220;
+      --border:  #14213a;
+      --accent:  #2196F3;
+      --green:   #4CAF50;
+      --gold:    #c8a84b;
+      --text:    #dde4f0;
+      --muted:   #6b7f9e;
+      --dim:     #101c30;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(33,150,243,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(33,150,243,0.025) 1px, transparent 1px);
+      background-size: 52px 52px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .hero {
+      position: relative;
+      padding: 52px 0 48px;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -32px; right: -32px; bottom: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(33,150,243,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+
+    .logo-block img {
+      height: 70px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 12px rgba(33,150,243,0.15));
+    }
+
+    .hero-divider {
+      width: 1px; height: 64px;
+      background: linear-gradient(to bottom, transparent, var(--border), transparent);
+      flex-shrink: 0;
+    }
+
+    .hero-text { flex: 1; min-width: 200px; }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-title em { font-style: normal; color: var(--accent); }
+
+    .hero-sub {
+      margin-top: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section { padding-top: 44px; }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.5s 0.25s ease both;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 26px 26px 22px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.5s; }
+    .card:nth-child(4) { animation-delay: 0.6s; }
+    .card:nth-child(5) { animation-delay: 0.7s; }
+
+    .card-live:hover {
+      border-color: var(--card-color, var(--accent));
+      transform: translateY(-3px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--card-color, var(--accent));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card-live:hover::after { opacity: 1; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-icon {
+      width: 42px; height: 42px;
+      border-radius: 8px;
+      background: var(--dim);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .badge-live { color: var(--green); border-color: var(--green); background: rgba(76,175,80,0.08); }
+    .badge-beta { color: #FFC107; border-color: #FFC107; background: rgba(255,193,7,0.08); }
+    .badge-soon { color: var(--muted); border-color: var(--border); }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .card-scope {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--card-color, var(--accent));
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-top: 3px;
+    }
+
+    .card-desc {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .card-foot {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      background: var(--dim);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .arrow {
+      font-size: 16px;
+      color: var(--card-color, var(--accent));
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .card-live:hover .arrow { opacity: 1; transform: translateX(0); }
+    .card-disabled { opacity: 0.4; pointer-events: none; }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: fadeUp 0.5s 0.7s ease both;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .dot-live {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .footer-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .footer-right span { color: var(--gold); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; } 50% { opacity:0.2; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="logo-block">
+        <img src="https://eliteconsultingpartners.com/wp-content/uploads/White-ECP-Transparent.png"
+             alt="Elite Consulting Partners" />
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-text">
+        <div class="hero-eyebrow">Internal Tools Portal</div>
+        <h1 class="hero-title">Business Intelligence <em>Hub</em></h1>
+        <p class="hero-sub">BDA &amp; SBC performance analytics &nbsp;·&nbsp; Sales productivity &nbsp;·&nbsp; Revenue projections</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-label">Analytics Tools</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="cards">
+
+      <!-- 1. Moneyball -->
+      <a href="https://moneyball-gray.vercel.app/" target="_blank" rel="noopener"
+         class="card card-live" style="--card-color:#FFD700;">
+        <div class="card-head">
+          <div class="card-icon">⚾</div>
+          <div class="badge badge-beta">Beta</div>
+        </div>
+        <div>
+          <div class="card-name">Moneyball</div>
+          <div class="card-scope">BDA &amp; SBC Performance</div>
+          <div class="card-desc" style="margin-top:10px;">
+            Cumulative net P&amp;L per rep.<br/>
+            Calendar date &amp; tenure month views<br/>
+            with rep-by-rep comparison.
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="card-tags">
+            <span class="tag">RPr</span>
+            <span class="tag">BDA + SBC</span>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 2. Gross Payback -->
+      <a href="https://bda-payback.vercel.app" target="_blank" rel="noopener"
+         class="card card-live" style="--card-color:#4CAF50;">
+        <div class="card-head">
+          <div class="card-icon">📈</div>
+          <div class="badge badge-beta">Beta</div>
+        </div>
+        <div>
+          <div class="card-name">Moneyball Multiple</div>
+          <div class="card-scope">BDA &amp; SBC Performance</div>
+          <div class="card-desc" style="margin-top:10px;">
+            Profit multiple per rep over time.<br/>
+            Tracks P+/-C ratio, breakeven crossings<br/>
+            and cost recovery — direct costs only.
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="card-tags">
+            <span class="tag">Calendar</span>
+            <span class="tag">24 Months</span>
+            <span class="tag">BDA + SBC</span>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 3. Moneyball Multiple Projection -->
+      <a href="https://bda-projection.vercel.app" target="_blank" rel="noopener"
+         class="card card-live" style="--card-color:#2196F3;">
+        <div class="card-head">
+          <div class="card-icon">🎯</div>
+          <div class="badge badge-beta">Beta</div>
+        </div>
+        <div>
+          <div class="card-name">Moneyball Multiple Projection</div>
+          <div class="card-scope">BDA &amp; SBC Performance</div>
+          <div class="card-desc" style="margin-top:10px;">
+            Revenue scenario tool for active reps.<br/>
+            Input projected revenue · see breakeven<br/>
+            impact including commissions + tax.
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="card-tags">
+            <span class="tag">Overview</span>
+            <span class="tag">Detail</span>
+            <span class="tag">Projection</span>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 4. Net Income Bridge -->
+      <a href="https://bda-net-profit-bridge.vercel.app/" target="_blank" rel="noopener"
+         class="card card-live" style="--card-color:#E91E63;">
+        <div class="card-head">
+          <div class="card-icon">🌉</div>
+          <div class="badge badge-beta">Beta</div>
+        </div>
+        <div>
+          <div class="card-name">Net Income Bridge</div>
+          <div class="card-scope">BDA &amp; SBC Performance</div>
+          <div class="card-desc" style="margin-top:10px;">
+            Quarterly net income waterfall.<br/>
+            Shows what drove change period<br/>
+            over period across rolling quarters.
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="card-tags">
+            <span class="tag">Quarterly</span>
+            <span class="tag">Bridge</span>
+            <span class="tag">Net Income</span>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 5. Management Gauges (coming soon) -->
+      <div class="card card-disabled" style="--card-color:#9C27B0;">
+        <div class="card-head">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 14a8 8 0 1 1 16 0" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M11 14L8 9" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="11" cy="14" r="1.5" fill="#9C27B0"/>
+              <path d="M6 14h1M16 14h-1M11 7v1" stroke="#9C27B0" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="badge badge-soon">Coming soon</div>
+        </div>
+        <div>
+          <div class="card-name">Management Gauges</div>
+          <div class="card-scope">BDA &amp; SBC Performance</div>
+          <div class="card-desc" style="margin-top:10px;">
+            At-a-glance performance indicators<br/>
+            for sales management. Real-time<br/>
+            KPI tracking across the team.
+          </div>
+        </div>
+        <div class="card-foot">
+          <div class="card-tags">
+            <span class="tag">KPIs</span>
+            <span class="tag">BDA + SBC</span>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        Internal use only &nbsp;·&nbsp; All tools password protected
+      </div>
+      <div class="footer-right">🔑 pw: <span>john2026</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
