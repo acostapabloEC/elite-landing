@@ -108,27 +108,64 @@
       line-height: 1.6;
     }
 
-    .section { padding-top: 44px; }
+    /* TABS */
+    .tabs-wrap {
+      padding-top: 36px;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
 
-    .section-header {
+    .tab-bar {
       display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 24px;
-      animation: fadeUp 0.5s 0.25s ease both;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
     }
 
-    .section-label {
+    .tab-btn {
       font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      white-space: nowrap;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
     }
 
-    .section-line { flex: 1; height: 1px; background: var(--border); }
+    .tab-btn:hover { color: var(--text); }
 
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-btn.active.gold { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 9px;
+      background: var(--dim);
+      color: var(--muted);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .tab-btn.active .tab-count { background: rgba(33,150,243,0.15); color: var(--accent); }
+    .tab-btn.active.gold .tab-count { background: rgba(200,168,75,0.15); color: var(--gold); }
+
+    .tab-panel { display: none; animation: fadeUp 0.3s ease both; }
+    .tab-panel.active { display: block; }
+
+    /* CARDS */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -152,11 +189,11 @@
       animation: fadeUp 0.5s ease both;
     }
 
-    .card:nth-child(1) { animation-delay: 0.3s; }
-    .card:nth-child(2) { animation-delay: 0.4s; }
-    .card:nth-child(3) { animation-delay: 0.5s; }
-    .card:nth-child(4) { animation-delay: 0.6s; }
-    .card:nth-child(5) { animation-delay: 0.7s; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
 
     .card-live:hover {
       border-color: var(--card-color, var(--accent));
@@ -271,23 +308,12 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      animation: fadeUp 0.5s 0.7s ease both;
     }
 
     .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       font-family: 'DM Mono', monospace;
       font-size: 11px;
       color: var(--muted);
-    }
-
-    .dot-live {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: blink 2s ease-in-out infinite;
     }
 
     .footer-right {
@@ -301,9 +327,6 @@
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes blink {
-      0%,100% { opacity:1; } 50% { opacity:0.2; }
     }
   </style>
 </head>
@@ -325,158 +348,296 @@
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-header">
-      <div class="section-label">Analytics Tools</div>
-      <div class="section-line"></div>
+  <div class="tabs-wrap">
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('analytics', this)">
+        Analytics <span class="tab-count">5</span>
+      </button>
+      <button class="tab-btn gold" onclick="switchTab('marketing', this)">
+        Marketing <span class="tab-count">5</span>
+      </button>
     </div>
 
-    <div class="cards">
+    <!-- ANALYTICS TAB -->
+    <div id="tab-analytics" class="tab-panel active">
+      <div class="cards">
 
-      <!-- 1. Moneyball -->
-      <a href="https://moneyball-gray.vercel.app/" target="_blank" rel="noopener"
-         class="card card-live" style="--card-color:#FFD700;">
-        <div class="card-head">
-          <div class="card-icon">⚾</div>
-          <div class="badge badge-beta">Beta</div>
-        </div>
-        <div>
-          <div class="card-name">Moneyball</div>
-          <div class="card-scope">BDA &amp; SBC Performance</div>
-          <div class="card-desc" style="margin-top:10px;">
-            Cumulative net P&amp;L per rep.<br/>
-            Calendar date &amp; tenure month views<br/>
-            with rep-by-rep comparison.
+        <a href="https://moneyball-gray.vercel.app/" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#FFD700;">
+          <div class="card-head">
+            <div class="card-icon">⚾</div>
+            <div class="badge badge-beta">Beta</div>
           </div>
-        </div>
-        <div class="card-foot">
-          <div class="card-tags">
-            <span class="tag">RPr</span>
-            <span class="tag">BDA + SBC</span>
+          <div>
+            <div class="card-name">Moneyball</div>
+            <div class="card-scope">BDA &amp; SBC Performance</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Cumulative net P&amp;L per rep.<br/>
+              Calendar date &amp; tenure month views<br/>
+              with rep-by-rep comparison.
+            </div>
           </div>
-          <div class="arrow">→</div>
-        </div>
-      </a>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">RPr</span>
+              <span class="tag">BDA + SBC</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
 
-      <!-- 2. Gross Payback -->
-      <a href="https://bda-payback.vercel.app" target="_blank" rel="noopener"
-         class="card card-live" style="--card-color:#4CAF50;">
-        <div class="card-head">
-          <div class="card-icon">📈</div>
-          <div class="badge badge-beta">Beta</div>
-        </div>
-        <div>
-          <div class="card-name">Moneyball Multiple</div>
-          <div class="card-scope">BDA &amp; SBC Performance</div>
-          <div class="card-desc" style="margin-top:10px;">
-            Profit multiple per rep over time.<br/>
-            Tracks P+/-C ratio, breakeven crossings<br/>
-            and cost recovery — direct costs only.
+        <a href="https://bda-payback.vercel.app" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#4CAF50;">
+          <div class="card-head">
+            <div class="card-icon">📈</div>
+            <div class="badge badge-beta">Beta</div>
           </div>
-        </div>
-        <div class="card-foot">
-          <div class="card-tags">
-            <span class="tag">Calendar</span>
-            <span class="tag">24 Months</span>
-            <span class="tag">BDA + SBC</span>
+          <div>
+            <div class="card-name">Moneyball Multiple</div>
+            <div class="card-scope">BDA &amp; SBC Performance</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Profit multiple per rep over time.<br/>
+              Tracks P+/-C ratio, breakeven crossings<br/>
+              and cost recovery — direct costs only.
+            </div>
           </div>
-          <div class="arrow">→</div>
-        </div>
-      </a>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">Calendar</span>
+              <span class="tag">24 Months</span>
+              <span class="tag">BDA + SBC</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
 
-      <!-- 3. Moneyball Multiple Projection -->
-      <a href="https://bda-projection.vercel.app" target="_blank" rel="noopener"
-         class="card card-live" style="--card-color:#2196F3;">
-        <div class="card-head">
-          <div class="card-icon">🎯</div>
-          <div class="badge badge-beta">Beta</div>
-        </div>
-        <div>
-          <div class="card-name">Moneyball Multiple Projection</div>
-          <div class="card-scope">BDA &amp; SBC Performance</div>
-          <div class="card-desc" style="margin-top:10px;">
-            Revenue scenario tool for active reps.<br/>
-            Input projected revenue · see breakeven<br/>
-            impact including commissions + tax.
+        <a href="https://bda-projection.vercel.app" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#2196F3;">
+          <div class="card-head">
+            <div class="card-icon">🎯</div>
+            <div class="badge badge-beta">Beta</div>
           </div>
-        </div>
-        <div class="card-foot">
-          <div class="card-tags">
-            <span class="tag">Overview</span>
-            <span class="tag">Detail</span>
-            <span class="tag">Projection</span>
+          <div>
+            <div class="card-name">Moneyball Multiple Projection</div>
+            <div class="card-scope">BDA &amp; SBC Performance</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Revenue scenario tool for active reps.<br/>
+              Input projected revenue · see breakeven<br/>
+              impact including commissions + tax.
+            </div>
           </div>
-          <div class="arrow">→</div>
-        </div>
-      </a>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">Overview</span>
+              <span class="tag">Detail</span>
+              <span class="tag">Projection</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
 
-      <!-- 4. Net Income Bridge -->
-      <a href="https://bda-net-profit-bridge.vercel.app/" target="_blank" rel="noopener"
-         class="card card-live" style="--card-color:#E91E63;">
-        <div class="card-head">
-          <div class="card-icon">🌉</div>
-          <div class="badge badge-beta">Beta</div>
-        </div>
-        <div>
-          <div class="card-name">Net Income Bridge</div>
-          <div class="card-scope">BDA &amp; SBC Performance</div>
-          <div class="card-desc" style="margin-top:10px;">
-            Quarterly net income waterfall.<br/>
-            Shows what drove change period<br/>
-            over period across rolling quarters.
+        <a href="https://bda-net-profit-bridge.vercel.app/" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#E91E63;">
+          <div class="card-head">
+            <div class="card-icon">🌉</div>
+            <div class="badge badge-beta">Beta</div>
           </div>
-        </div>
-        <div class="card-foot">
-          <div class="card-tags">
-            <span class="tag">Quarterly</span>
-            <span class="tag">Bridge</span>
-            <span class="tag">Net Income</span>
+          <div>
+            <div class="card-name">Net Income Bridge</div>
+            <div class="card-scope">BDA &amp; SBC Performance</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Quarterly net income waterfall.<br/>
+              Shows what drove change period<br/>
+              over period across rolling quarters.
+            </div>
           </div>
-          <div class="arrow">→</div>
-        </div>
-      </a>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">Quarterly</span>
+              <span class="tag">Bridge</span>
+              <span class="tag">Net Income</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
 
-      <!-- 5. Management Gauges (coming soon) -->
-      <div class="card card-disabled" style="--card-color:#9C27B0;">
-        <div class="card-head">
-          <div class="card-icon">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 14a8 8 0 1 1 16 0" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M11 14L8 9" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="11" cy="14" r="1.5" fill="#9C27B0"/>
-              <path d="M6 14h1M16 14h-1M11 7v1" stroke="#9C27B0" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-            </svg>
+        <div class="card card-disabled" style="--card-color:#9C27B0;">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M3 14a8 8 0 1 1 16 0" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M11 14L8 9" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="11" cy="14" r="1.5" fill="#9C27B0"/>
+                <path d="M6 14h1M16 14h-1M11 7v1" stroke="#9C27B0" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="badge badge-soon">Coming soon</div>
           </div>
-          <div class="badge badge-soon">Coming soon</div>
-        </div>
-        <div>
-          <div class="card-name">Management Gauges</div>
-          <div class="card-scope">BDA &amp; SBC Performance</div>
-          <div class="card-desc" style="margin-top:10px;">
-            At-a-glance performance indicators<br/>
-            for sales management. Real-time<br/>
-            KPI tracking across the team.
+          <div>
+            <div class="card-name">Management Gauges</div>
+            <div class="card-scope">BDA &amp; SBC Performance</div>
+            <div class="card-desc" style="margin-top:10px;">
+              At-a-glance performance indicators<br/>
+              for sales management. Real-time<br/>
+              KPI tracking across the team.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">KPIs</span>
+              <span class="tag">BDA + SBC</span>
+            </div>
+            <div class="arrow">→</div>
           </div>
         </div>
-        <div class="card-foot">
-          <div class="card-tags">
-            <span class="tag">KPIs</span>
-            <span class="tag">BDA + SBC</span>
-          </div>
-          <div class="arrow">→</div>
-        </div>
+
       </div>
+    </div>
 
+    <!-- MARKETING TAB -->
+    <div id="tab-marketing" class="tab-panel">
+      <div class="cards">
+
+        <a href="https://epg-marketing-dashboard.vercel.app/" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#0077B5;">
+          <div class="card-head">
+            <div class="card-icon">💼</div>
+            <div class="badge badge-live">Live</div>
+          </div>
+          <div>
+            <div class="card-name">LinkedIn Dashboard</div>
+            <div class="card-scope">Frank LaRosa · Social</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Engagements, impressions &amp; followers.<br/>
+              Weekly trend + post volume chart.<br/>
+              Q2 goal tracking · Jan–Apr 2026.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">LinkedIn</span>
+              <span class="tag">Q2 Goal</span>
+              <span class="tag">Weekly</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
+
+        <a href="https://epg-youtube-dashboard.vercel.app/" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#FF0000;">
+          <div class="card-head">
+            <div class="card-icon">▶️</div>
+            <div class="badge badge-live">Live</div>
+          </div>
+          <div>
+            <div class="card-name">YouTube Dashboard</div>
+            <div class="card-scope">Frank LaRosa · Video</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Views, engagements &amp; subscriber growth.<br/>
+              Q1 2026 performance with March<br/>
+              breakout analysis.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">YouTube</span>
+              <span class="tag">Q1 2026</span>
+              <span class="tag">Video</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
+
+        <a href="https://epg-tv-dashboard.vercel.app/" target="_blank" rel="noopener"
+           class="card card-live" style="--card-color:#c8a84b;">
+          <div class="card-head">
+            <div class="card-icon">📺</div>
+            <div class="badge badge-live">Live</div>
+          </div>
+          <div>
+            <div class="card-name">TV Dashboard</div>
+            <div class="card-scope">Office Screen · All Platforms</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Single-screen KPI view for the office TV.<br/>
+              Social + podcast headline metrics.<br/>
+              No scrolling — fits any display.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">TV</span>
+              <span class="tag">All Platforms</span>
+              <span class="tag">30-Day</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </a>
+
+        <div class="card card-disabled" style="--card-color:#8B5CF6;">
+          <div class="card-head">
+            <div class="card-icon">🎙️</div>
+            <div class="badge badge-soon">Coming soon</div>
+          </div>
+          <div>
+            <div class="card-name">Podcast Dashboard</div>
+            <div class="card-scope">Advisor Talk · Simplecast</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Downloads, unique listeners &amp; completion.<br/>
+              Platform split · episode performance.<br/>
+              Simplecast data.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">Podcast</span>
+              <span class="tag">Simplecast</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+
+        <div class="card card-disabled" style="--card-color:#E1306C;">
+          <div class="card-head">
+            <div class="card-icon">📷</div>
+            <div class="badge badge-soon">Coming soon</div>
+          </div>
+          <div>
+            <div class="card-name">Instagram Dashboard</div>
+            <div class="card-scope">Frank LaRosa · Social</div>
+            <div class="card-desc" style="margin-top:10px;">
+              Reach, impressions &amp; engagement.<br/>
+              Post performance by format.<br/>
+              Hootsuite export data.
+            </div>
+          </div>
+          <div class="card-foot">
+            <div class="card-tags">
+              <span class="tag">Instagram</span>
+              <span class="tag">Hootsuite</span>
+            </div>
+            <div class="arrow">→</div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="footer">
-      <div class="footer-left">
-        Internal use only &nbsp;·&nbsp; All tools password protected
-      </div>
+      <div class="footer-left">Internal use only &nbsp;·&nbsp; All tools password protected</div>
       <div class="footer-right">🔑 pw: <span>john2026</span></div>
     </div>
 
   </div>
 </div>
+
+<script>
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 </body>
 </html>
