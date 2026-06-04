@@ -360,7 +360,11 @@
   // ── Elite Landing Tracker ──────────────────────────────────────────────
   const WEBHOOK = 'https://default0de46722b9794e2ba8aa8900bae0ac.3c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/682610202cb74ed49894efdb5d3fca40/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gYRIhSNUoh8opZAKusYaAcVVeSbdV1HgrbaveeqOzMc';
 
-  function track(link) {
+  function sendCard(link, geo) {
+    const ua = navigator.userAgent;
+    const browser = /Chrome/.test(ua) ? 'Chrome' : /Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : /Edge/.test(ua) ? 'Edge' : 'Unknown';
+    const device = /Mobile|Android|iPhone|iPad/.test(ua) ? 'Mobile' : 'Desktop';
+    const os = /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : /Linux/.test(ua) ? 'Linux' : /Android/.test(ua) ? 'Android' : /iPhone|iPad/.test(ua) ? 'iOS' : 'Unknown';
     const payload = {
       type: 'message',
       attachments: [{
@@ -369,17 +373,27 @@
           type: 'AdaptiveCard',
           version: '1.4',
           body: [
-            { type: 'TextBlock', text: '📊 Elite Analytics Hub — Visit', weight: 'Bolder', size: 'Medium' },
+            { type: 'TextBlock', text: '📊 Elite Analytics Hub — Visit', weight: 'Bolder', size: 'Medium', color: 'Accent' },
             { type: 'FactSet', facts: [
-              { title: 'Link', value: link },
-              { title: 'Time', value: new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' }) },
-              { title: 'Referrer', value: document.referrer || 'Direct' }
+              { title: '🔗 Link', value: link },
+              { title: '🕐 Time', value: new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' }) },
+              { title: '📍 Location', value: geo ? `${geo.city}, ${geo.region} — ${geo.org}` : 'Unknown' },
+              { title: '🌐 IP', value: geo ? geo.ip : 'Unknown' },
+              { title: '💻 Device', value: `${browser} on ${os} (${device})` },
+              { title: '↩️ Referrer', value: document.referrer ? new URL(document.referrer).hostname : 'Direct' }
             ]}
           ]
         }
       }]
     };
     fetch(WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
+  }
+
+  function track(link) {
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(geo => sendCard(link, geo))
+      .catch(() => sendCard(link, null));
   }
 
   // Track page load
