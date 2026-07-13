@@ -124,7 +124,7 @@
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('analytics', this)">Analytics <span class="tab-count">6</span></button>
       <button class="tab-btn gold" onclick="switchTab('marketing', this)">Marketing <span class="tab-count">6</span></button>
-      <button class="tab-btn pink" onclick="switchTab('master', this)">Master View <span class="tab-count">★</span></button>
+      <button class="tab-btn" style="opacity:0.45;cursor:default;" onclick="switchTab('master', this)">Master View <span class="tab-count" style="font-size:8px;">🚧</span></button>
     </div>
 
     <!-- ANALYTICS TAB -->
@@ -211,7 +211,12 @@
 
     <!-- MASTER TAB -->
     <div id="tab-master" class="tab-panel">
-      <div class="q2-banner">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 0;gap:16px;text-align:center;">
+        <div style="font-size:32px;">🚧</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);">Under Renovation</div>
+        <div style="font-size:13px;color:var(--muted);max-width:320px;line-height:1.7;">Cross-platform master view is being rebuilt. Check individual platform dashboards in the Marketing tab.</div>
+      </div>
+      <div style="display:none;"><div class="q2-banner">
         <div>
           <div class="q2-label">Q3 2026 · LinkedIn Engagement Goal</div>
           <div class="q2-value">2,100</div>
@@ -347,6 +352,7 @@
           </div>
         </a>
       </div>
+      </div><!-- end hidden -->
     </div>
 
     <div class="footer">
