@@ -2,8 +2,6 @@
 // so the landing page can show real "last updated" dates without any manual bookkeeping.
 const PROJECTS = {
   moneyball: 'prj_x2TKRhtPqYP8SpMF2gyHDjpMYRbj',
-  'bda-payback': 'prj_QdYqAee5WqBWXSrd1akTXxGefZaj',
-  'bda-projection': 'prj_H1XcUnHSz7Dx0qI0sQh8zsH3qXcw',
   'bda-net-profit-bridge': 'prj_MxlDxYJZckJgKeEJJBOTHvPoKHF2',
   'bda-calls-efficiency-dashboard': 'prj_Dm8WKqxxnBo1BlVHytjK16149QRk',
   'epg-marketing-dashboard': 'prj_YqDPaIUfI2NZ5mCPq9XoNNQTllaF',
