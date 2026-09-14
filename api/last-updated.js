@@ -10,6 +10,7 @@ const PROJECTS = {
   'epg-instagram-dashboard': 'prj_KBAcXGQGRlqutg343X2xL8eErwP9',
   'epg-google-reviews-dashboard': 'prj_QihCDzxWf9TY6EamEfpBnnvQDY94',
   'epg-simplecast-podcast': 'prj_qqqMHooXpRIGZjhLG1xeaashZ7f7',
+  'epg-linkedin-company-dashboard': 'prj_OvcxTC2lbjAhhTckd03geGvd7cYz',
 };
 
 export default async function handler(req, res) {
