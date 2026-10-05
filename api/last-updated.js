@@ -11,6 +11,7 @@ const PROJECTS = {
   'epg-google-reviews-dashboard': 'prj_QihCDzxWf9TY6EamEfpBnnvQDY94',
   'epg-simplecast-podcast': 'prj_qqqMHooXpRIGZjhLG1xeaashZ7f7',
   'epg-linkedin-company-dashboard': 'prj_OvcxTC2lbjAhhTckd03geGvd7cYz',
+  'epg-instagram-company-dashboard': 'prj_Xy28COgycvtQAHr59FY8grRX9Ret',
 };
 
 export default async function handler(req, res) {
